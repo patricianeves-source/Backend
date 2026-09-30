@@ -1,16 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inventário {
+public class Inventario {
 
     private List<String> pistas;
 
-    public Inventário() {
+    public Inventario() {
         this.pistas = new ArrayList<>();
     }
 
     public void adicionarPista(String pista) {
-        pistas.add(pista);
+        if (!pistas.contains(pista)) {
+            pistas.add(pista);
+        }
     }
 
     public void mostrarPistas() {
@@ -24,6 +26,5 @@ public class Inventário {
         }
     }
 }
-
 
 

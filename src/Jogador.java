@@ -1,30 +1,31 @@
 public class Jogador {
 
     private String nome;
-    private Inventário inventario;
+    private Inventario inventario;
 
     public Jogador(String nome) {
         this.nome = nome;
-        this.inventario = new Inventário();
+        this.inventario = new Inventario();
     }
 
     public String getNome() {
         return nome;
     }
 
-    public Inventário getInventario() {
+    public Inventario getInventario() {
         return inventario;
     }
 
-    public void investigar(Personagem personagem, int opcao) {
-        if (opcao == 1) {
-            System.out.println(personagem.getNome() + ": " + personagem.getRespostaComum());
-            inventario.adicionarPista(personagem.getRespostaComum());
-        } else if (opcao == 2) {
-            System.out.println(personagem.getPerguntaEspecifica());
-            System.out.println(personagem.getNome() + ": " + personagem.responderPerguntaEspecifica());
-            inventario.adicionarPista(personagem.responderPerguntaEspecifica());
-        }
+    // Polimorfismo + interface: investiga uma pessoa OU um local
+    public void investigar(Investigavel alvo) {
+        String resultado = alvo.investigar();
+        System.out.println("\n[" + alvo.getNome() + "] " + resultado);
+        inventario.adicionarPista(resultado);
+    }
+
+    public void perguntarRumor(Personagem personagem) {
+        String rumor = personagem.getRespostaComum();
+        System.out.println("\n" + personagem.getNome() + ": " + rumor);
+        inventario.adicionarPista(rumor);
     }
 }
-
