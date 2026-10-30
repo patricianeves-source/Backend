@@ -1,9 +1,13 @@
+
 package com.seduc2.biblioteca.Controller;
 
 import com.seduc2.biblioteca.Entity.Livro;
 import com.seduc2.biblioteca.Service.LivroService;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -17,30 +21,33 @@ public class LivroController {
         this.service = service;
     }
 
+    // GET - Listar todos os livros
     @GetMapping
     public List<Livro> listar() {
         return service.listar();
     }
 
+    // GET - Buscar livro pelo ID
     @GetMapping("/{id}")
-    public Livro buscar(@PathVariable Long id) {
-        return service.buscar(id);
+    public ResponseEntity<Livro> buscar(@PathVariable Long id) {
+
+        Livro livro = service.buscar(id);
+
+        if (livro != null) {
+            return ResponseEntity.ok(livro);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+    // POST - Cadastrar livro
     @PostMapping
-    public Livro cadastrar(@RequestBody Livro livro) {
-        return service.cadastrar(livro);
-    }
+    public ResponseEntity<Livro> cadastrar(@RequestBody Livro livro) {
 
-    @PutMapping("/{id}")
-    public Livro atualizar(
-            @PathVariable Long id,
-            @RequestBody Livro livro) {
-        return service.atualizar(id, livro);
-    }
+        Livro novoLivro = service.cadastrar(livro);
 
-    @DeleteMapping("/{id}")
-    public void excluir(@PathVariable Long id) {
-        service.excluir(id);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(novoLivro);
     }
 }
